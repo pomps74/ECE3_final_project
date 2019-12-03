@@ -2,7 +2,7 @@
 #include <ECE3.h>
 
 uint16_t sensorValues[8];
-double weights[] = { -12.5, -11.25, -10, -6.25, 6.25, 10, 11.25, 12.5};
+double weights[] = { -15, -13.5, -12, -7.5, 7.5, 12, 13.5, 15};
 double prevErrors[5] = {0, 0, 0, 0, 0};
 const int left_nslp_pin = 31; // nslp ==> awake & ready for PWM
 const int right_nslp_pin = 11; // nslp ==> awake & ready for PWM
@@ -38,9 +38,9 @@ void setup()
 }
 
 void PID(double error, int &leftSpd, int &rightSpd) {
-  double Kp = 5;
+  double Kp = 6;
   long Up = error * Kp;
-  double Kd = 27;
+  double Kd = 45;
   long dE_dt = 0;
   for (int i = 0; i < 4; i++)
     dE_dt += error - prevErrors[i + 1];
@@ -73,9 +73,9 @@ void loop()
   // max value would be 7500ish, min is -8600ish
   for (int i = 0; i < 8; i++)
     error += weights[i] *  ((double)sensorValues[i]);
-  if (sensorValues[3] > 1800 && sensorValues[4] > 1800 && sensorValues[2] > 1800 && sensorValues[5] > 1800)
+  if (sensorValues[3] > 2200 && sensorValues[4] > 2200 && sensorValues[2] > 2200 && sensorValues[5] > 2200)
   {
-    if (counterDoughnuts > 5) {
+    if (counterDoughnuts > 6) {
       turnAround();
       counterDoughnuts = 0;
     }
